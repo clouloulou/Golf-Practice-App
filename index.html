@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Golf Practice Assistant</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-green-50 to-emerald-100 min-h-screen">
+    <div id="app" class="container mx-auto px-4 py-8 max-w-6xl">
+        <!-- Header -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+            <h1 class="text-3xl font-bold text-green-800 mb-2">Golf Practice Assistant</h1>
+            <p class="text-gray-600 mb-4">Personalized practice sessions for low handicap improvement</p>
+            
+            <!-- Navigation Tabs -->
+            <div class="flex flex-wrap gap-2 mb-4">
+                <button onclick="showTab('practice')" id="tab-practice" class="tab-btn px-4 py-2 rounded-lg font-medium transition-colors bg-green-600 text-white">
+                    Practice
+                </button>
+                <button onclick="showTab('favorites')" id="tab-favorites" class="tab-btn px-4 py-2 rounded-lg font-medium transition-colors bg-gray-200 text-gray-700 hover:bg-gray-300">
+                    ⭐ Favorites
+                </button>
+                <button onclick="showTab('progress')" id="tab-progress" class="tab-btn px-4 py-2 rounded-lg font-medium transition-colors bg-gray-200 text-gray-700 hover:bg-gray-300">
+                    📈 Progress
+                </button>
+                <button onclick="showTab('calendar')" id="tab-calendar" class="tab-btn px-4 py-2 rounded-lg font-medium transition-colors bg-gray-200 text-gray-700 hover:bg-gray-300">
+                    📅 Weekly Log
+                </button>
+            </div>
+            
+            <!-- Benchmarks Toggle -->
+            <div class="flex items-center gap-3 mb-2">
+                <button onclick="toggleBenchmarks()" class="text-sm text-green-700 hover:text-green-900 font-medium underline">
+                    📊 View Benchmarks
+                </button>
+                <select id="benchmarkSelector" onchange="updateBenchmarkDisplay()" class="text-sm border border-gray-300 rounded px-2 py-1">
+                    <option value="pga">PGA Tour</option>
+                    <option value="scratch" selected>Scratch Golfer</option>
+                </select>
+            </div>
+            
+            <div id="benchmarks" class="hidden mt-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                <h3 class="font-semibold text-gray-800 mb-3" id="benchmarkTitle">Scratch Golfer Benchmarks</h3>
+                <div id="benchmarkContent" class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                    <!-- Content will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Practice Tab -->
+        <div id="practice-tab">
+            <!-- Day Selection -->
+            <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">Select Practice Focus</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <button onclick="selectDay(1)" class="day-btn p-6 rounded-lg border-2 border-green-200 hover:border-green-500 hover:bg-green-50 transition-all">
+                        <div class="text-4xl mb-2">⛳</div>
+                        <div class="font-semibold text-gray-800">Day 1</div>
+                        <div class="text-sm text-gray-600">Driver & Irons</div>
+                    </button>
+                    <button onclick="selectDay(2)" class="day-btn p-6 rounded-lg border-2 border-green-200 hover:border-green-500 hover:bg-green-50 transition-all">
+                        <div class="text-4xl mb-2">🏌️</div>
+                        <div class="font-semibold text-gray-800">Day 2</div>
+                        <div class="text-sm text-gray-600">Short Game</div>
+                    </button>
+                    <button onclick="selectDay(3)" class="day-btn p-6 rounded-lg border-2 border-green-200 hover:border-green-500 hover:bg-green-50 transition-all">
+                        <div class="text-4xl mb-2">⛳</div>
+                        <div class="font-semibold text-gray-800">Day 3</div>
+                        <div class="text-sm text-gray-600">Putting</div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Practice Session Display -->
+            <div id="sessionDisplay" class="hidden">
+                <!-- Session Timer -->
+                <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-800">Session Timer</h3>
+                            <div class="text-4xl font-bold text-green-700 mt-2" id="timerDisplay">00:00</div>
+                        </div>
+                        <div class="flex gap-3">
+                            <button onclick="toggleTimer()" id="timerBtn" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg transition-colors font-medium">
+                                ▶ Start
+                            </button>
+                            <button onclick="resetTimer()" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg transition-colors font-medium">
+                                ↻ Reset
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 id="sessionTitle" class="text-2xl font-bold text-green-800"></h2>
+                        <button onclick="generateNewSession()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors">
+                            🔄 New Session
+                        </button>
+                    </div>
+                    <p class="text-gray-600 mb-4">Duration: 45-60 minutes</p>
+                    
+                    <!-- Progress Tracker -->
+                    <div class="mb-6">
+                        <div class="flex justify-between text-sm text-gray-600 mb-2">
+                            <span>Session Progress</span>
+                            <span id="progressText">0/4 drills completed</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div id="progressBar" class="bg-green-600 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Drills List -->
+                    <div id="drillsList" class="space-y-4"></div>
+                </div>
+
+                <!-- Session Stats -->
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Session Notes</h3>
+                    <textarea id="sessionNotes" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent" rows="4" placeholder="Track your progress, breakthrough moments, or areas to focus on next time..."></textarea>
+                    <button onclick="saveSessionNotes()" class="mt-3 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors">
+                        Save Notes
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Favorites Tab -->
+        <div id="favorites-tab" class="hidden">
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-2xl font-bold text-green-800 mb-4">⭐ Your Favorite Drills</h2>
+                <div id="favoritesList" class="space-y-4"></div>
+            </div>
+        </div>
+
+        <!-- Progress Tab -->
+        <div id="progress-tab" class="hidden">
+            <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+                <h2 class="text-2xl font-bold text-green-800 mb-4">📈 Your Progress vs Benchmarks</h2>
+                <p class="text-gray-600 mb-6">Track how you're performing against scratch golfer benchmarks</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="progressCharts">
+                    <!-- Charts will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Calendar Tab -->
+        <div id="calendar-tab" class="hidden">
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-2xl font-bold text-green-800 mb-4">📅 This Week's Practice Log</h2>
+                <div id="weeklyCalendar" class="space-y-3"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Drill Notes Modal -->
+    <div id="notesModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold text-gray-800" id="modalDrillName"></h3>
+                    <button onclick="closeNotesModal()" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Add Note</label>
+                    <textarea id="drillNoteInput" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent" rows="3" placeholder="E.g., 'Felt better with no-hinge pitch' or 'Struggled with green reading today'"></textarea>
+                    <button onclick="saveDrillNote()" class="mt-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors">
+                        Save Note
+                    </button>
+                </div>
+
+                <div id="previousNotes" class="mt-6">
+                    <h4 class="font-semibold text-gray-800 mb-3">Previous Notes (Last 5)</h4>
+                    <div id="notesList" class="space-y-2"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentDay = null;
+        let currentDrills = [];
+        let completedDrills = new Set();
+        let timerInterval = null;
+        let timerSeconds = 0;
+        let timerRunning = false;
+        let currentDrillForNotes = null;
+        let sessionStartTime = null;
+        let drillCompletionTimes = {};
+
+        // Data storage keys
+        const STORAGE_KEYS = {
+            favorites: 'golf_favorites',
+            drillNotes: 'golf_drill_notes',
+            weeklyLog: 'golf_weekly_log',
+            drillPerformance: 'golf_drill_performance'
+        };
+
+        // Benchmark data
+        const benchmarks = {
+            pga: {
+                title: "PGA Tour Averages",
+                putting: {
+                    "3-4 feet": "92% make",
+                    "3 feet": "99.45% make",
+                    "5 feet": "80% make",
+                    "6 feet": "25.4 ft avg proximity",
+                    "8 feet": "50% make",
+                    "10 feet": "41.28% make",
+                    "20 feet in 3-ft circle": "98.1%",
+                    "30 feet in 3-ft circle": "90%"
+                },
+                shortGame: {
+                    "10 yards in 3-ft": "80%+",
+                    "Bunker up-down": "50%+",
+                    "Par-18 chipping": "par or better"
+                },
+                longGame: {
+                    "Fairways hit": "60%+",
+                    "GIR": "65%+"
+                }
+            },
+            scratch: {
+                title: "Scratch Golfer Benchmarks",
+                putting: {
+                    "3 feet": "93% make",
+                    "5 feet": "66% make",
+                    "8 feet": "41% make",
+                    "10 feet": "33% make",
+                    "15 feet": "21% make",
+                    "20 feet in 3-ft circle": "98%",
+                    "30 feet in 3-ft circle": "91%",
+                    "3-putt from 15-24ft": "2%",
+                    "3-putt from 24-40ft": "9%",
+                    "3-putt from 40+ft": "23%"
+                },
+                shortGame: {
+                    "Up & Down rate": "48%+",
+                    "Double-chips per round": "0.55",
+                    "10 yards proximity": "5.9 ft",
+                    "15 yards proximity": "8 ft",
+                    "20 yards proximity": "10.3 ft",
+                    "25 yards proximity": "12.2 ft"
+                },
+                approach: {
+                    "GIR 140-150 yards": "62%",
+                    "GIR 160-170 yards": "51.5%",
+                    "GIR 180-190 yards": "37%",
+                    "Proximity 140-150": "8.1% (of distance)",
+                    "Proximity 160-170": "8.9% (of distance)",
+                    "Proximity 180-190": "9.7% (of distance)"
+                },
+                driving: {
+                    "Fairway %": "46.2%",
+                    "Penalty rate": "3.9%",
+                    "Dispersion": "4.77°",
+                    "Recovery rate": "7%"
+                }
+            }
+        };
+
+        // Drill benchmarks for progress tracking
+        const drillBenchmarks = [
+            {
+                drillName: "10 in a Row from 3-4 Feet",
+                category: "Putting",
+                benchmark: 92,
+                unit: "% make rate",
+                scratchBenchmark: 93
+            },
+            {
+                drillName: "25 in a Row from 3 Feet",
+                category: "Putting",
+                benchmark: 99.45,
+                unit: "% make rate",
+                scratchBenchmark: 93
+            },
+            {
+                drillName: "8 out of 10 from 5 Feet",
+                category: "Putting",
+                benchmark: 80,
+                unit: "% make rate",
+                scratchBenchmark: 66
+            },
+            {
+                drillName: "5 out of 10 from 8 Feet",
+                category: "Putting",
+                benchmark: 50,
+                unit: "% make rate",
+                scratchBenchmark: 41
+            },
+            {
+                drillName: "20-20-20 Lag Putting",
+                category: "Putting",
+                benchmark: 90,
+                unit: "% in 3-ft circle",
+                scratchBenchmark: 98
+            },
+            {
+                drillName: "Good, Bad, Ugly",
+                category: "Short Game",
+                benchmark: null,
+                unit: "locations/10 min",
+                scratchBenchmark: 4
+            },
+            {
+                drillName: "8 out of 10 Circle Drill",
+                category: "Short Game",
+                benchmark: 80,
+                unit: "% success rate",
+                scratchBenchmark: 80
+            }
+        ];
+
+        function updateBenchmarkDisplay() {
+            const selector = document.getElementById('benchmarkSelector');
+            const benchmarkType = selector.value;
+            const data = benchmarks[benchmarkType];
+            
+            document.getElementById('benchmarkTitle').textContent = data.title;
+            
+            let html = '';
+            
+            // Putting section
+            html += '<div><strong>Putting:</strong><ul class="ml-4 mt-1 space-y-1">';
+            for (const [key, value] of Object.entries(data.putting)) {
+                html += `<li>• ${key}: ${value}</li>`;
+            }
+            html += '</ul></div>';
+            
+            // Short Game section
+            html += '<div><strong>Short Game:</strong><ul class="ml-4 mt-1 space-y-1">';
+            for (const [key, value] of Object.entries(data.shortGame)) {
+                html += `<li>• ${key}: ${value}</li>`;
+            }
+            html += '</ul>';
+            
+            // Additional sections for scratch benchmarks
+            if (benchmarkType === 'scratch') {
+                html += '<strong class="block mt-3">Approach:</strong><ul class="ml-4 mt-1 space-y-1">';
+                for (const [key, value] of Object.entries(data.approach)) {
+                    html += `<li>• ${key}: ${value}</li>`;
+                }
+                html += '</ul>';
+                
+                html += '<strong class="block mt-3">Driving:</strong><ul class="ml-4 mt-1 space-y-1">';
+                for (const [key, value] of Object.entries(data.driving)) {
+                    html += `<li>• ${key}: ${value}</li>`;
+                }
+                html += '</ul>';
+            } else {
+                // PGA Long game section
+                html += '<strong class="block mt-3">Long Game:</strong><ul class="ml-4 mt-1 space-y-1">';
+                for (const [key, value] of Object.entries(data.longGame)) {
+                    html += `<li>• ${key}: ${value}</li>`;
+                }
+                html += '</ul>';
+            }
+            
+            html += '</div>';
+            
+            document.getElementById('benchmarkContent').innerHTML = html;
+        }
+
+        function toggleBenchmarks() {
+            const benchmarks = document.getElementById('benchmarks');
+            const isHidden = benchmarks.classList.contains('hidden');
+            
+            if (isHidden) {
+                updateBenchmarkDisplay();
+            }
+            
+            benchmarks.classList.toggle('hidden');
+        }
+
+        function showTab(tabName) {
+            // Hide all tabs
+            document.getElementById('practice-tab').classList.add('hidden');
+            document.getElementById('favorites-tab').classList.add('hidden');
+            document.getElementById('progress-tab').classList.add('hidden');
+            document.getElementById('calendar-tab').classList.add('hidden');
+
+            // Show selected tab
+            document.getElementById(tabName + '-tab').classList.remove('hidden');
+
+            // Update tab buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-green-600', 'text-white');
+                btn.classList.add('bg-gray-200', 'text-gray-700');
+            });
+            document.getElementById('tab-' + tabName).classList.remove('bg-gray-200', 'text-gray-700');
+            document.getElementById('tab-' + tabName).classList.add('bg-green-600', 'text-white');
+
+            // Render content for the tab
+            if (tabName === 'favorites') {
+                renderFavorites();
+            } else if (tabName === 'progress') {
+                renderProgressCharts();
+            } else if (tabName === 'calendar') {
+                renderWeeklyCalendar();
+            }
+        }
+
+        // Timer Functions
+        function toggleTimer() {
+            if (timerRunning) {
+                pauseTimer();
+            } else {
+                startTimer();
+            }
+        }
+
+        function startTimer() {
+            if (!sessionStartTime) {
+                sessionStartTime = Date.now() - (timerSeconds * 1000);
+            }
+            timerRunning = true;
+            document.getElementById('timerBtn').innerHTML = '⏸ Pause';
+            timerInterval = setInterval(() => {
+                timerSeconds++;
+                updateTimerDisplay();
+            }, 1000);
+        }
+
+        function pauseTimer() {
+            timerRunning = false;
+            document.getElementById('timerBtn').innerHTML = '▶ Resume';
+            clearInterval(timerInterval);
+        }
+
+        function resetTimer() {
+            timerRunning = false;
+            timerSeconds = 0;
+            sessionStartTime = null;
+            drillCompletionTimes = {};
+            clearInterval(timerInterval);
+            document.getElementById('timerBtn').innerHTML = '▶ Start';
+            updateTimerDisplay();
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timerSeconds / 60);
+            const seconds = timerSeconds % 60;
+            document.getElementById('timerDisplay').textContent = 
+                `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }
+
+        // Local Storage Functions
+        function getFavorites() {
+            const stored = localStorage.getItem(STORAGE_KEYS.favorites);
+            return stored ? JSON.parse(stored) : [];
+        }
+
+        function saveFavorites(favorites) {
+            localStorage.setItem(STORAGE_KEYS.favorites, JSON.stringify(favorites));
+        }
+
+        function toggleFavorite(drillKey) {
+            const favorites = getFavorites();
+            const index = favorites.findIndex(f => f.key === drillKey);
+            
+            if (index > -1) {
+                favorites.splice(index, 1);
+            } else {
+                const drill = findDrillByKey(drillKey);
+                if (drill) {
+                    favorites.push({
+                        key: drillKey,
+                        drill: drill.drill,
+                        category: drill.category
+                    });
+                }
+            }
+            
+            saveFavorites(favorites);
+            renderDrills();
+            if (document.getElementById('favorites-tab').classList.contains('hidden') === false) {
+                renderFavorites();
+            }
+        }
+
+        function isFavorite(drillKey) {
+            const favorites = getFavorites();
+            return favorites.some(f => f.key === drillKey);
+        }
+
+        function findDrillByKey(drillKey) {
+            const [day, set, index] = drillKey.split('-').map(Number);
+            const drill = practicePrograms[day].drillSets[set][index];
+            const category = practicePrograms[day].title;
+            return drill ? { drill, category } : null;
+        }
+
+        function renderFavorites() {
+            const favorites = getFavorites();
+            const favoritesList = document.getElementById('favoritesList');
+            
+            if (favorites.length === 0) {
+                favoritesList.innerHTML = '<p class="text-gray-500 text-center py-8">No favorite drills yet. Star drills during practice to save them here!</p>';
+                return;
+            }
+
+            favoritesList.innerHTML = favorites.map(fav => `
+                <div class="border-2 border-gray-200 rounded-lg p-5 bg-white">
+                    <div class="flex justify-between items-start mb-3">
+                        <div class="flex-1">
+                            <div class="flex items-center gap-2">
+                                <button onclick="toggleFavorite('${fav.key}')" class="text-2xl">⭐</button>
+                                <h3 class="text-lg font-semibold text-gray-800">${fav.drill.name}</h3>
+                            </div>
+                            <p class="text-sm text-gray-500 mt-1">${fav.category}</p>
+                            <p class="text-sm text-green-700 font-medium mt-1">${fav.drill.goal}</p>
+                        </div>
+                        <button onclick="openNotesModal('${fav.key}')" class="bg-blue-100 text-blue-800 px-3 py-1 rounded-lg text-sm hover:bg-blue-200">
+                            📝 Notes
+                        </button>
+                    </div>
+                    <p class="text-gray-700 mb-2">${fav.drill.description}</p>
+                    <div class="flex flex-wrap gap-2 mt-3">
+                        <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">${fav.drill.reps}</span>
+                        <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm">${fav.drill.focus}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Notes Functions
+        function getDrillNotes(drillKey) {
+            const stored = localStorage.getItem(STORAGE_KEYS.drillNotes);
+            const allNotes = stored ? JSON.parse(stored) : {};
+            return allNotes[drillKey] || [];
+        }
+
+        function saveDrillNoteToStorage(drillKey, note) {
+            const stored = localStorage.getItem(STORAGE_KEYS.drillNotes);
+            const allNotes = stored ? JSON.parse(stored) : {};
+            
+            if (!allNotes[drillKey]) {
+                allNotes[drillKey] = [];
+            }
+            
+            allNotes[drillKey].unshift({
+                note: note,
+                timestamp: new Date().toISOString()
+            });
+            
+            // Keep only last 20 notes per drill
+            allNotes[drillKey] = allNotes[drillKey].slice(0, 20);
+            
+            localStorage.setItem(STORAGE_KEYS.drillNotes, JSON.stringify(allNotes));
+        }
+
+        function openNotesModal(drillKey) {
+            currentDrillForNotes = drillKey;
+            const drillData = findDrillByKey(drillKey);
+            
+            if (!drillData) return;
+            
+            document.getElementById('modalDrillName').textContent = drillData.drill.name;
+            document.getElementById('drillNoteInput').value = '';
+            
+            const notes = getDrillNotes(drillKey);
+            const notesList = document.getElementById('notesList');
+            
+            if (notes.length === 0) {
+                notesList.innerHTML = '<p class="text-gray-500 text-sm">No notes yet for this drill.</p>';
+            } else {
+                notesList.innerHTML = notes.slice(0, 5).map(n => {
+                    const date = new Date(n.timestamp);
+                    return `
+                        <div class="bg-gray-50 p-3 rounded border border-gray-200">
+                            <p class="text-sm text-gray-800">${n.note}</p>
+                            <p class="text-xs text-gray-500 mt-1">${date.toLocaleDateString()} at ${date.toLocaleTimeString()}</p>
+                        </div>
+                    `;
+                }).join('');
+            }
+            
+            document.getElementById('notesModal').classList.remove('hidden');
+        }
+
+        function closeNotesModal() {
+            document.getElementById('notesModal').classList.add('hidden');
+            currentDrillForNotes = null;
+        }
+
+        function saveDrillNote() {
+            const noteText = document.getElementById('drillNoteInput').value.trim();
+            if (!noteText || !currentDrillForNotes) return;
+            
+            saveDrillNoteToStorage(currentDrillForNotes, noteText);
+            openNotesModal(currentDrillForNotes); // Refresh the modal
+        }
+
+        // Performance Tracking Functions
+        function getDrillPerformance(drillName) {
+            const stored = localStorage.getItem(STORAGE_KEYS.drillPerformance);
+            const allPerformance = stored ? JSON.parse(stored) : {};
+            return allPerformance[drillName] || [];
+        }
+
+        function saveDrillPerformance(drillName, performance) {
+            const stored = localStorage.getItem(STORAGE_KEYS.drillPerformance);
+            const allPerformance = stored ? JSON.parse(stored) : {};
+            
+            if (!allPerformance[drillName]) {
+                allPerformance[drillName] = [];
+            }
+            
+            allPerformance[drillName].push({
+                value: performance,
+                timestamp: new Date().toISOString()
+            });
+            
+            // Keep only last 20 entries per drill
+            allPerformance[drillName] = allPerformance[drillName].slice(-20);
+            
+            localStorage.setItem(STORAGE_KEYS.drillPerformance, JSON.stringify(allPerformance));
+        }
+
+        function createPieChart(canvasId, percentage, label, benchmark) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const radius = 70;
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw background circle
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+            ctx.fillStyle = '#e5e7eb';
+            ctx.fill();
+            
+            // Draw progress arc
+            const progressAngle = (percentage / 100) * 2 * Math.PI;
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.arc(centerX, centerY, radius, -Math.PI / 2, -Math.PI / 2 + progressAngle);
+            ctx.closePath();
+            
+            // Color based on performance vs benchmark
+            if (percentage >= benchmark) {
+                ctx.fillStyle = '#10b981'; // Green
+            } else if (percentage >= benchmark * 0.8) {
+                ctx.fillStyle = '#f59e0b'; // Orange
+            } else {
+                ctx.fillStyle = '#ef4444'; // Red
+            }
+            ctx.fill();
+            
+            // Draw center white circle for donut effect
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius - 20, 0, 2 * Math.PI);
+            ctx.fillStyle = '#ffffff';
+            ctx.fill();
+            
+            // Draw text
+            ctx.fillStyle = '#1f2937';
+            ctx.font = 'bold 24px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(percentage + '%', centerX, centerY);
+        }
+
+        function renderProgressCharts() {
+            const container = document.getElementById('progressCharts');
+            
+            // Get unique drills from benchmarks
+            const chartsHtml = drillBenchmarks.map((benchmark, index) => {
+                const performance = getDrillPerformance(benchmark.drillName);
+                const avgPerformance = performance.length > 0 
+                    ? Math.round(performance.reduce((sum, p) => sum + p.value, 0) / performance.length)
+                    : 0;
+                
+                const scratchBench = benchmark.scratchBenchmark;
+                const attempts = performance.length;
+                
+                return `
+                    <div class="border border-gray-200 rounded-lg p-4 bg-white">
+                        <h3 class="font-semibold text-gray-800 mb-2">${benchmark.drillName}</h3>
+                        <p class="text-xs text-gray-600 mb-3">${benchmark.category}</p>
+                        
+                        <div class="flex justify-center mb-3">
+                            <canvas id="chart-${index}" width="180" height="180"></canvas>
+                        </div>
+                        
+                        <div class="text-center space-y-1">
+                            <p class="text-sm text-gray-700">Your Avg: <strong>${avgPerformance}${benchmark.unit.includes('%') ? '%' : ''}</strong></p>
+                            <p class="text-sm text-green-700">Scratch: <strong>${scratchBench}${benchmark.unit.includes('%') ? '%' : ''}</strong></p>
+                            <p class="text-xs text-gray-500 mt-2">${attempts} attempts logged</p>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            container.innerHTML = chartsHtml;
+            
+            // Draw all charts after DOM update
+            setTimeout(() => {
+                drillBenchmarks.forEach((benchmark, index) => {
+                    const performance = getDrillPerformance(benchmark.drillName);
+                    const avgPerformance = performance.length > 0 
+                        ? Math.round(performance.reduce((sum, p) => sum + p.value, 0) / performance.length)
+                        : 0;
+                    createPieChart(`chart-${index}`, avgPerformance, benchmark.drillName, benchmark.scratchBenchmark);
+                });
+            }, 100);
+        }
+
+        function logDrillPerformance(drillName, benchmark) {
+            const performance = prompt(`Enter your performance for ${drillName}\n\nTarget: ${benchmark}%\n\nEnter your percentage (0-100):`);
+            if (performance && !isNaN(performance)) {
+                const value = parseFloat(performance);
+                if (value >= 0 && value <= 100) {
+                    saveDrillPerformance(drillName, value);
+                    alert('✅ Performance logged successfully!');
+                } else {
+                    alert('Please enter a value between 0 and 100');
+                }
+            }
+        }
+
+        function openPerformanceModal(drillName, benchmark) {
+            logDrillPerformance(drillName, benchmark);
+        }
+
+        // Weekly Log Functions
+        function getWeeklyLog() {
+            const stored = localStorage.getItem(STORAGE_KEYS.weeklyLog);
+            return stored ? JSON.parse(stored) : [];
+        }
+
+        function saveWeeklyLog(log) {
+            localStorage.setItem(STORAGE_KEYS.weeklyLog, JSON.stringify(log));
+        }
+
+        function logSession() {
+            if (completedDrills.size === 0) return;
+            
+            const log = getWeeklyLog();
+            const sessionData = {
+                date: new Date().toISOString(),
+                category: practicePrograms[currentDay].title,
+                duration: timerSeconds,
+                drills: currentDrills.map((drill, index) => ({
+                    name: drill.name,
+                    completed: completedDrills.has(index),
+                    timeSpent: drillCompletionTimes[index] || 0
+                }))
+            };
+            
+            log.push(sessionData);
+            
+            // Keep only last 30 days
+            const thirtyDaysAgo = new Date();
+            thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+            const filtered = log.filter(s => new Date(s.date) > thirtyDaysAgo);
+            
+            saveWeeklyLog(filtered);
+        }
+
+        function renderWeeklyCalendar() {
+            const log = getWeeklyLog();
+            const calendar = document.getElementById('weeklyCalendar');
+            
+            // Get last 7 days
+            const days = [];
+            for (let i = 6; i >= 0; i--) {
+                const date = new Date();
+                date.setDate(date.getDate() - i);
+                date.setHours(0, 0, 0, 0);
+                days.push(date);
+            }
+            
+            calendar.innerHTML = days.map(day => {
+                const dayStart = new Date(day);
+                const dayEnd = new Date(day);
+                dayEnd.setHours(23, 59, 59, 999);
+                
+                const daySessions = log.filter(s => {
+                    const sessionDate = new Date(s.date);
+                    return sessionDate >= dayStart && sessionDate <= dayEnd;
+                });
+                
+                const isPracticeDay = daySessions.length > 0;
+                const isToday = day.toDateString() === new Date().toDateString();
+                
+                return `
+                    <div class="border rounded-lg p-4 ${isPracticeDay ? 'bg-green-50 border-green-300' : 'bg-gray-50 border-gray-200'} ${isToday ? 'ring-2 ring-blue-400' : ''}">
+                        <div class="flex justify-between items-center mb-2">
+                            <div>
+                                <div class="font-semibold text-gray-800">${day.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}</div>
+                                ${isToday ? '<span class="text-xs text-blue-600 font-medium">Today</span>' : ''}
+                            </div>
+                            ${isPracticeDay ? '<span class="text-2xl">✅</span>' : '<span class="text-2xl opacity-30">📅</span>'}
+                        </div>
+                        ${isPracticeDay ? `
+                            <div class="space-y-2 mt-3">
+                                ${daySessions.map(session => {
+                                    const sessionTime = new Date(session.date);
+                                    const minutes = Math.floor(session.duration / 60);
+                                    const completedCount = session.drills.filter(d => d.completed).length;
+                                    return `
+                                        <div class="bg-white p-3 rounded border border-green-200 text-sm">
+                                            <div class="font-medium text-gray-800">${session.category}</div>
+                                            <div class="text-gray-600 text-xs mt-1">
+                                                ${sessionTime.toLocaleTimeString()} • ${minutes} min • ${completedCount}/${session.drills.length} drills
+                                            </div>
+                                            <details class="mt-2">
+                                                <summary class="text-xs text-green-700 cursor-pointer hover:text-green-800">View drills</summary>
+                                                <ul class="mt-2 space-y-1 ml-4">
+                                                    ${session.drills.map(d => `
+                                                        <li class="text-xs ${d.completed ? 'text-green-700' : 'text-gray-500'}">
+                                                            ${d.completed ? '✓' : '○'} ${d.name}
+                                                        </li>
+                                                    `).join('')}
+                                                </ul>
+                                            </details>
+                                        </div>
+                                    `;
+                                }).join('')}
+                            </div>
+                        ` : '<p class="text-xs text-gray-500 mt-2">No practice</p>'}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        const practicePrograms = {
+            1: { // Driver & Irons Day
+                title: "Driver & Irons Practice",
+                drillSets: [
+                    [
+                        {
+                            name: "Heart Rate Tee Ball",
+                            description: "Tight par 4, 22 yards either side. Hit drive, do 10 jumping jacks, wait 30 seconds, hit again. Repeat 8 times.",
+                            goal: "Execute under pressure with elevated heart rate",
+                            reps: "8 drives minimum",
+                            focus: "Full routine each time - simulate tournament pressure"
+                        },
+                        {
+                            name: "Second Serve (Driver vs 3W)",
+                            description: "Hit 5 drivers with 'fairway finder' swing, then 5 with 3 wood. Track dispersion. Repeat 2x.",
+                            goal: "Determine optimal tee club for tight holes",
+                            reps: "20 shots total",
+                            focus: "Which club gives better dispersion when it matters?"
+                        },
+                        {
+                            name: "Shot Shaper",
+                            description: "150-170 yard target. Imagine water right, aim 10 yards left, fade it back (can't cross pin). Do 5, then 5 jump squats, execute 6th shot. Repeat other direction.",
+                            goal: "Build shot versatility under fatigue",
+                            reps: "12 shots minimum",
+                            focus: "Heart pounding execution - normalize the feeling"
+                        },
+                        {
+                            name: "Lil Jon (Wedges)",
+                            description: "30, 60, 90 yards. Hit 3 shots at each distance with sand wedge, then repeat with 60°. Cycle through 3 times both clubs.",
+                            goal: "Dial in critical wedge distances",
+                            reps: "10 mins max",
+                            focus: "30 = common par 4/5 miss, 60 = tweener, 90 = bread & butter"
+                        }
+                    ],
+                    [
+                        {
+                            name: "3 A Side (Wedge Precision)",
+                            description: "60° wedge: Hit 50 yards (47-53 allowed). 3 chances to succeed. Then 60 yards (57-63), then 70 yards. Fail = restart.",
+                            goal: "Dial in exact wedge distances",
+                            reps: "10 minutes",
+                            focus: "Precision over power - nail your numbers"
+                        },
+                        {
+                            name: "Driver Start Line Drill",
+                            description: "Place alignment sticks creating a gate 10 yards out. Hit 12 drives through the gate.",
+                            goal: "Improve initial ball flight direction",
+                            reps: "12 shots",
+                            focus: "Face control at impact, not path manipulation"
+                        },
+                        {
+                            name: "Iron Compression Test",
+                            description: "Hit 8-iron focusing on ball-first contact. Judge quality by divot and flight.",
+                            goal: "Improve strike quality",
+                            reps: "10 shots",
+                            focus: "Weight forward, hands ahead, compress the ball"
+                        },
+                        {
+                            name: "Random Club Selection",
+                            description: "Pick clubs randomly (5i-PW). Hit to varying distances without practice swings.",
+                            goal: "Build course-ready decision making",
+                            reps: "12 shots",
+                            focus: "Commit to the shot and trust your swing"
+                        }
+                    ],
+                    [
+                        {
+                            name: "Driver Tee Height Experiment",
+                            description: "Hit 4 drives at low tee, 4 at medium, 4 at high. Track launch and dispersion.",
+                            goal: "Optimize launch conditions",
+                            reps: "12 shots",
+                            focus: "Attack angle and how tee height affects contact"
+                        },
+                        {
+                            name: "Iron Distance Gaps",
+                            description: "Hit 6-iron and 7-iron, measuring gaps. Ensure 10-15 yard difference.",
+                            goal: "Validate distance gapping",
+                            reps: "6 shots per club",
+                            focus: "Consistent swing with each club, no manipulation"
+                        },
+                        {
+                            name: "Wind Play Practice",
+                            description: "Visualize different wind conditions. Practice low punch, high fade, draw into wind.",
+                            goal: "Develop wind management skills",
+                            reps: "15 shots varied",
+                            focus: "Ball flight laws and trajectory control"
+                        },
+                        {
+                            name: "Fairway Finder Game",
+                            description: "10 drivers: +2 points for fairway, 0 for rough, -1 for trouble. Target: 12+",
+                            goal: "Incentivize smart driving",
+                            reps: "10 shots",
+                            focus: "Risk management and shot selection"
+                        }
+                    ]
+                ]
+            },
+            2: { // Short Game Day
+                title: "Short Game Practice",
+                drillSets: [
+                    [
+                        {
+                            name: "Good, Bad, Ugly",
+                            description: "Choose a pin, put down 3 balls: (1) fringe tweener putt/chip, (2) straightforward chip (70%+ up-down), (3) terrible lie. All 3 must finish within 6 feet to advance.",
+                            goal: "Build scrambling from varied lies",
+                            reps: "Complete 4+ locations in 10 mins",
+                            focus: "Execute from any lie - make the ugly lie actually ugly"
+                        },
+                        {
+                            name: "8 out of 10 Circle Drill",
+                            description: "From 10 yards: 8/10 in 3-foot circle. From 20 yards: 8/10 in 6-foot circle. From 30 yards: 8/10 in 8-foot circle.",
+                            goal: "Improve scoring zone accuracy (PGA avg: 80%+)",
+                            reps: "30 chips total",
+                            focus: "Pick your landing spot, commit to trajectory"
+                        },
+                        {
+                            name: "NSEW Compass Chipping",
+                            description: "4 chips to each hole on green from different angles. Score how many of 64 chips finish inside 3 feet.",
+                            goal: "Develop directional control and touch",
+                            reps: "64 chips",
+                            focus: "Read green from all angles, adjust for slope"
+                        },
+                        {
+                            name: "Par-18 Chipping Challenge",
+                            description: "Play from different locations, par 2 for each 'hole'. Goal: get up and down in 2 strokes.",
+                            goal: "Simulate course pressure scenarios",
+                            reps: "18 different locations",
+                            focus: "Smart targets, commitment to the shot"
+                        }
+                    ],
+                    [
+                        {
+                            name: "50-90 Yard Random Pitching",
+                            description: "Use alignment stick in grip. Hit pitch shots between 50-90 yards in 10-yard increments, ensuring stick doesn't hit side of body.",
+                            goal: "Dial in partial wedge distances",
+                            reps: "10+ shots varied distances",
+                            focus: "Body rotation, not just arms - stick as feedback"
+                        },
+                        {
+                            name: "Bunker Mastery Circuit",
+                            description: "10 in a row on green. 7/10 stop inside flagstick length. 5 in a row from green feet out of bunker. Complete the circuit.",
+                            goal: "Build bunker confidence (PGA avg: 50%+ up-down)",
+                            reps: "Until all 3 objectives met",
+                            focus: "Consistent entry point, accelerate through sand"
+                        },
+                        {
+                            name: "Distance Wedge Ladder",
+                            description: "Hit wedges to 40, 50, 60, 70, 80 yards. Chart actual vs intended carry.",
+                            goal: "Dial in wedge distances",
+                            reps: "3 shots each distance",
+                            focus: "Different clubs or swing lengths for control"
+                        },
+                        {
+                            name: "10-Yard Chipping Game",
+                            description: "From 10 yards, must get 10 in a row within 15 feet. Track time to complete.",
+                            goal: "Build consistency on basic chips",
+                            reps: "10 consecutive successful",
+                            focus: "Routine, pick spot, execute - no overthinking"
+                        }
+                    ],
+                    [
+                        {
+                            name: "Spin Control Wedges",
+                            description: "From 60 yards, hit shots trying to maximize spin vs minimize. Feel difference.",
+                            goal: "Understand spin creation",
+                            reps: "12 shots alternating",
+                            focus: "Angle of attack, face control, ball position"
+                        },
+                        {
+                            name: "Scramble Simulation",
+                            description: "Place ball in 5 difficult positions. Execute recovery shots as if in competition.",
+                            goal: "Practice course management",
+                            reps: "5 scenarios",
+                            focus: "Smart targets, commitment to the shot"
+                        },
+                        {
+                            name: "Hybrid/Utility Bump & Run",
+                            description: "From 30-40 yards off green, use hybrid to bump ball onto green. Get 5 inside 15 feet.",
+                            goal: "Add versatility to short game arsenal",
+                            reps: "Until 5 successful",
+                            focus: "Putting-style stroke with lofted club"
+                        },
+                        {
+                            name: "Pressure Chip Game",
+                            description: "10 chips from varied lies. Start with 10 points, lose 1 for each miss outside 6 feet.",
+                            goal: "Build mental toughness",
+                            reps: "10 shots",
+                            focus: "Execute under pressure, manage expectations"
+                        }
+                    ]
+                ]
+            },
+            3: { // Putting Day
+                title: "Putting Practice",
+                drillSets: [
+                    [
+                        {
+                            name: "AP Skeleton (Tee Targets)",
+                            description: "Find 2% slope area. Place center tee, create half-moon with 6 tees around it. From each position, 2 chances to hit center tee. Miss twice = restart from beginning.",
+                            goal: "Improve accuracy (PGA avg: 25.4 ft on 6-footers)",
+                            reps: "Pass/Fail in 10 mins",
+                            focus: "Hit tiny targets - hole looks HUGE after this drill"
+                        },
+                        {
+                            name: "10 in a Row from 3-4 Feet",
+                            description: "Make 10 consecutive 3-4 foot putts. Miss one = restart. (PGA avg: 92% make rate)",
+                            goal: "Build confidence on must-make putts",
+                            reps: "Until 10 consecutive",
+                            focus: "Solid strike, confident stroke, routine"
+                        },
+                        {
+                            name: "25 in a Row from 3 Feet",
+                            description: "Use 6 tee pegs around hole, switch directions after 12. Must make 25 consecutive.",
+                            goal: "Groove short putt stroke (PGA avg: 99.45%)",
+                            reps: "Until 25 consecutive",
+                            focus: "Start line accuracy, putter square through impact"
+                        },
+                        {
+                            name: "20-20-20 Lag Putting",
+                            description: "From 20, 30, 45 feet, must stop all putts in 3-foot circle. Use 3-5 balls.",
+                            goal: "Develop distance control (PGA avg: 98.1% from 20ft, 90% from 30ft)",
+                            reps: "Until successful at all 3 distances",
+                            focus: "Tempo and length of stroke, not hit"
+                        }
+                    ],
+                    [
+                        {
+                            name: "8 out of 10 from 5 Feet",
+                            description: "From 5 feet, make 8 out of 10 putts. (PGA avg: 80% make rate from 5 feet)",
+                            goal: "Improve make percentage on makeable putts",
+                            reps: "10 putts",
+                            focus: "Commitment to line, solid contact"
+                        },
+                        {
+                            name: "5 out of 10 from 8 Feet",
+                            description: "From 8 feet, make 5 out of 10 putts. (PGA avg: 50% make rate from 8 feet)",
+                            goal: "Build confidence from birdie range",
+                            reps: "10 putts",
+                            focus: "Read green, commit to speed and line"
+                        },
+                        {
+                            name: "3-Foot Compass Drill",
+                            description: "Take 4x 3-foot putts from all holes available. 36 putts at different holes. (PGA avg: 35.8/36 makes)",
+                            goal: "Simulate course conditions with varied slopes",
+                            reps: "36 putts minimum",
+                            focus: "Adjust read for each location, maintain routine"
+                        },
+                        {
+                            name: "Decade Distance Drill (20-40 feet)",
+                            description: "Mark distances at 20ft, roll putt between first tee-hole pair. Start at 20ft, goal to be within 10% of starting distance (e.g., <2ft from 20ft).",
+                            goal: "Master varying lag distances",
+                            reps: "Multiple distances 20-40ft",
+                            focus: "Feel for different power levels, tempo not force"
+                        }
+                    ],
+                    [
+                        {
+                            name: "Killer Drill",
+                            description: "Tee pegs from 3-10ft in line (1' increments), 3 Lives. No hole required, 3 tees, 2 strides forward when 3 strides forward, making first putt past first tee, second ball needs to pass first but not last.",
+                            goal: "Build pressure putting skills",
+                            reps: "Until complete or lives lost",
+                            focus: "Execute each putt independently, manage pressure"
+                        },
+                        {
+                            name: "Overtake Game",
+                            description: "Same setup as Killer but on different lies, from 3-7 ft in 4 directions from hole. Remove tee when you hold putt from that spot. Total count, goal: pick up all tees in as few putts as possible.",
+                            goal: "Pressure putting from varied slopes",
+                            reps: "Until all tees collected",
+                            focus: "Read slope changes, commit to each line"
+                        },
+                        {
+                            name: "20 Tee Game",
+                            description: "Tee at 10ft, 2 pts for holing, -1 for coming up short or 3 putting. First to 10 pts wins. (PGA avg: 29/20 makes)",
+                            goal: "Build competitive mindset",
+                            reps: "Until 10 points",
+                            focus: "Aggressive but controlled speed"
+                        },
+                        {
+                            name: "10-Foot Putt Game",
+                            description: "From 10 feet, score based on outcome: holing = 2pts, short/3-putt = -1pt. Target: reach 13 points. (PGA avg: 41.28% from 10ft)",
+                            goal: "Improve conversion from critical distance",
+                            reps: "Until 13 points",
+                            focus: "Read, commit, trust your stroke"
+                        }
+                    ]
+                ]
+            }
+        };
+
+        function selectDay(day) {
+            currentDay = day;
+            completedDrills.clear();
+            generateNewSession();
+            document.getElementById('sessionDisplay').classList.remove('hidden');
+            document.getElementById('sessionTitle').textContent = practicePrograms[day].title;
+            resetTimer();
+            window.scrollTo({ top: document.getElementById('sessionDisplay').offsetTop - 20, behavior: 'smooth' });
+        }
+
+        function generateNewSession() {
+            if (!currentDay) return;
+            
+            const program = practicePrograms[currentDay];
+            const randomSet = program.drillSets[Math.floor(Math.random() * program.drillSets.length)];
+            currentDrills = randomSet;
+            completedDrills.clear();
+            drillCompletionTimes = {};
+            
+            renderDrills();
+            updateProgress();
+        }
+
+        function renderDrills() {
+            const drillsList = document.getElementById('drillsList');
+            drillsList.innerHTML = currentDrills.map((drill, index) => {
+                const drillKey = `${currentDay}-${practicePrograms[currentDay].drillSets.findIndex(set => set === currentDrills)}-${index}`;
+                const isFav = isFavorite(drillKey);
+                
+                // Check if this drill has a benchmark
+                const benchmark = drillBenchmarks.find(b => b.drillName === drill.name);
+                
+                return `
+                    <div class="border-2 border-gray-200 rounded-lg p-5 ${completedDrills.has(index) ? 'bg-green-50 border-green-300' : 'bg-white'}">
+                        <div class="flex justify-between items-start mb-3">
+                            <div class="flex-1">
+                                <div class="flex items-center gap-2">
+                                    <button onclick="toggleFavorite('${drillKey}')" class="text-2xl hover:scale-110 transition-transform">
+                                        ${isFav ? '⭐' : '☆'}
+                                    </button>
+                                    <h3 class="text-lg font-semibold text-gray-800">${drill.name}</h3>
+                                    ${benchmark ? '<span class="ml-2 bg-purple-100 text-purple-700 px-2 py-1 rounded text-xs font-medium">📊 Tracked</span>' : ''}
+                                </div>
+                                <p class="text-sm text-green-700 font-medium mt-1">${drill.goal}</p>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="openNotesModal('${drillKey}')" class="bg-blue-100 text-blue-800 px-3 py-2 rounded-lg text-sm hover:bg-blue-200">
+                                    📝 Notes
+                                </button>
+                                <button onclick="toggleDrill(${index})" class="ml-2 ${completedDrills.has(index) ? 'bg-green-600' : 'bg-gray-300'} hover:opacity-80 text-white px-4 py-2 rounded-lg transition-all">
+                                    ${completedDrills.has(index) ? '✓ Done' : 'Mark Done'}
+                                </button>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 mb-2">${drill.description}</p>
+                        <div class="flex flex-wrap gap-2 mt-3">
+                            <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">${drill.reps}</span>
+                            <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm">${drill.focus}</span>
+                            ${benchmark ? `<button onclick="logDrillPerformance('${drill.name}', ${benchmark.scratchBenchmark})" class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-medium hover:bg-yellow-200 transition-colors">📈 Log Performance</button>` : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function toggleDrill(index) {
+            if (completedDrills.has(index)) {
+                completedDrills.delete(index);
+                delete drillCompletionTimes[index];
+            } else {
+                completedDrills.add(index);
+                drillCompletionTimes[index] = timerSeconds;
+                
+                // Auto-start timer if not running
+                if (!timerRunning && completedDrills.size === 1) {
+                    startTimer();
+                }
+            }
+            renderDrills();
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const total = currentDrills.length;
+            const completed = completedDrills.size;
+            const percentage = (completed / total) * 100;
+            
+            document.getElementById('progressBar').style.width = percentage + '%';
+            document.getElementById('progressText').textContent = `${completed}/${total} drills completed`;
+            
+            // Auto-log session when all drills complete
+            if (completed === total && total > 0) {
+                logSession();
+            }
+        }
+
+        function saveSessionNotes() {
+            const notes = document.getElementById('sessionNotes').value;
+            if (notes.trim()) {
+                alert('Session notes saved! Great job tracking your practice.');
+                // Could be enhanced to save to a session log
+            }
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', () => {
+            showTab('practice');
+        });
+
+        // Close modal on outside click
+        document.getElementById('notesModal').addEventListener('click', (e) => {
+            if (e.target.id === 'notesModal') {
+                closeNotesModal();
+            }
+        });
+    </script>
+</body>
+</html>
