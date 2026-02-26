@@ -1,4 +1,4 @@
-# Golf Practice Assistant TEST - Vercel Deployment
+# Golf Practice Assistant - Vercel Deployment
 
 Your Golf Practice Assistant app is ready to deploy to Vercel!
 
