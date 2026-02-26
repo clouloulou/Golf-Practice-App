@@ -10,7 +10,7 @@
     <div id="app" class="container mx-auto px-4 py-8 max-w-6xl">
         <!-- Header -->
         <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
-            <h1 class="text-3xl font-bold text-green-800 mb-2">Golf Practice Assistant TEST</h1>
+            <h1 class="text-3xl font-bold text-green-800 mb-2">Golf Practice Assistant</h1>
             <p class="text-gray-600 mb-4">Personalized practice sessions for low handicap improvement</p>
             
             <!-- Navigation Tabs -->
@@ -265,54 +265,176 @@
 
         // Drill benchmarks for progress tracking
         const drillBenchmarks = [
+            // Driver/Iron tracked drills
             {
-                drillName: "10 in a Row from 3-4 Feet",
-                category: "Putting",
-                benchmark: 92,
-                unit: "% make rate",
-                scratchBenchmark: 93
+                drillName: "Driver Start Line Drill",
+                category: "Driver/Iron",
+                benchmark: 100,
+                unit: "% through gate",
+                scratchBenchmark: 90,
+                metric: "How many through the gate (out of 12)"
             },
             {
-                drillName: "25 in a Row from 3 Feet",
-                category: "Putting",
-                benchmark: 99.45,
-                unit: "% make rate",
-                scratchBenchmark: 93
+                drillName: "Heart Rate Tee Ball",
+                category: "Driver/Iron",
+                benchmark: 70,
+                unit: "% fairways",
+                scratchBenchmark: 70,
+                metric: "How many out of 8 in the fairway"
             },
             {
-                drillName: "8 out of 10 from 5 Feet",
-                category: "Putting",
-                benchmark: 80,
-                unit: "% make rate",
-                scratchBenchmark: 66
+                drillName: "Fairway Finder Game",
+                category: "Driver/Iron",
+                benchmark: 12,
+                unit: " points",
+                scratchBenchmark: 12,
+                metric: "How many points out of 20"
             },
             {
-                drillName: "5 out of 10 from 8 Feet",
-                category: "Putting",
-                benchmark: 50,
-                unit: "% make rate",
-                scratchBenchmark: 41
+                drillName: "GIR Challenge - 5 Iron",
+                category: "Driver/Iron",
+                benchmark: 60,
+                unit: "% GIR",
+                scratchBenchmark: 60,
+                metric: "How many hit green (out of 10)"
             },
             {
-                drillName: "20-20-20 Lag Putting",
-                category: "Putting",
-                benchmark: 90,
-                unit: "% in 3-ft circle",
-                scratchBenchmark: 98
+                drillName: "GIR Challenge - 6 Iron",
+                category: "Driver/Iron",
+                benchmark: 60,
+                unit: "% GIR",
+                scratchBenchmark: 60,
+                metric: "How many hit green (out of 10)"
             },
+            {
+                drillName: "GIR Challenge - 7 Iron",
+                category: "Driver/Iron",
+                benchmark: 60,
+                unit: "% GIR",
+                scratchBenchmark: 60,
+                metric: "How many hit green (out of 10)"
+            },
+            {
+                drillName: "GIR Challenge - 8 Iron",
+                category: "Driver/Iron",
+                benchmark: 60,
+                unit: "% GIR",
+                scratchBenchmark: 60,
+                metric: "How many hit green (out of 10)"
+            },
+            {
+                drillName: "GIR Challenge - 9 Iron",
+                category: "Driver/Iron",
+                benchmark: 60,
+                unit: "% GIR",
+                scratchBenchmark: 60,
+                metric: "How many hit green (out of 10)"
+            },
+            // Short Game tracked drills
             {
                 drillName: "Good, Bad, Ugly",
                 category: "Short Game",
-                benchmark: null,
-                unit: "locations/10 min",
-                scratchBenchmark: 4
+                benchmark: 12,
+                unit: " shots",
+                scratchBenchmark: 12,
+                metric: "How many total within 6 feet"
             },
             {
-                drillName: "8 out of 10 Circle Drill",
+                drillName: "The Climb",
+                category: "Short Game",
+                benchmark: 100,
+                unit: " yards",
+                scratchBenchmark: 100,
+                metric: "Final distance window"
+            },
+            {
+                drillName: "Scoring Zone - 10 yds",
                 category: "Short Game",
                 benchmark: 80,
-                unit: "% success rate",
-                scratchBenchmark: 80
+                unit: "% within circle",
+                scratchBenchmark: 80,
+                metric: "How many shots within 3 feet (out of 10)"
+            },
+            {
+                drillName: "Scoring Zone - 20 yds",
+                category: "Short Game",
+                benchmark: 80,
+                unit: "% within circle",
+                scratchBenchmark: 80,
+                metric: "How many shots within 6 feet (out of 10)"
+            },
+            {
+                drillName: "Scoring Zone - 30 yds",
+                category: "Short Game",
+                benchmark: 80,
+                unit: "% within circle",
+                scratchBenchmark: 80,
+                metric: "How many shots within 8 feet (out of 10)"
+            },
+            {
+                drillName: "NSEW Compass Chipping",
+                category: "Short Game",
+                benchmark: 30,
+                unit: " shots",
+                scratchBenchmark: 30,
+                metric: "How many finish inside 3 feet (out of 40)"
+            },
+            {
+                drillName: "Par-18 Chipping Challenge",
+                category: "Short Game",
+                benchmark: 36,
+                unit: " strokes",
+                scratchBenchmark: 36,
+                metric: "Score over 18 holes"
+            },
+            {
+                drillName: "Pressure Chip Game",
+                category: "Short Game",
+                benchmark: 7,
+                unit: " points",
+                scratchBenchmark: 7,
+                metric: "Score after 10 shots"
+            },
+            // Putting Drills
+            {
+                drillName: "3-4 Footers",
+                category: "Putting",
+                benchmark: 93,
+                unit: "% make rate",
+                scratchBenchmark: 93,
+                metric: "How many out of 10 were made"
+            },
+            {
+                drillName: "5 Footers",
+                category: "Putting",
+                benchmark: 66,
+                unit: "% make rate",
+                scratchBenchmark: 66,
+                metric: "How many out of 10 were made"
+            },
+            {
+                drillName: "8 Footers",
+                category: "Putting",
+                benchmark: 41,
+                unit: "% make rate",
+                scratchBenchmark: 41,
+                metric: "How many out of 10 were made"
+            },
+            {
+                drillName: "AP Skeleton",
+                category: "Putting",
+                benchmark: 15,
+                unit: " attempts",
+                scratchBenchmark: 12,
+                metric: "How many attempts to complete"
+            },
+            {
+                drillName: "Par 18 Putting 25'-40'",
+                category: "Putting",
+                benchmark: 2,
+                unit: " 3-putts",
+                scratchBenchmark: 2,
+                metric: "How many 3 putts (lower is better)"
             }
         ];
 
@@ -684,6 +806,18 @@
                 const scratchBench = benchmark.scratchBenchmark;
                 const attempts = performance.length;
                 
+                // Calculate percentage for pie chart (different logic for different metrics)
+                let chartPercentage = 0;
+                if (benchmark.unit.includes('%')) {
+                    chartPercentage = avgPerformance;
+                } else if (benchmark.drillName === "Par 18 Putting 25'-40'") {
+                    // Lower is better - invert the scale
+                    chartPercentage = Math.max(0, 100 - (avgPerformance / scratchBench * 100));
+                } else {
+                    // For count-based metrics, show as percentage of benchmark
+                    chartPercentage = (avgPerformance / scratchBench) * 100;
+                }
+                
                 return `
                     <div class="border border-gray-200 rounded-lg p-4 bg-white">
                         <h3 class="font-semibold text-gray-800 mb-2">${benchmark.drillName}</h3>
@@ -694,9 +828,10 @@
                         </div>
                         
                         <div class="text-center space-y-1">
-                            <p class="text-sm text-gray-700">Your Avg: <strong>${avgPerformance}${benchmark.unit.includes('%') ? '%' : ''}</strong></p>
-                            <p class="text-sm text-green-700">Scratch: <strong>${scratchBench}${benchmark.unit.includes('%') ? '%' : ''}</strong></p>
+                            <p class="text-sm text-gray-700">Your Avg: <strong>${avgPerformance}${benchmark.unit}</strong></p>
+                            <p class="text-sm text-green-700">Target: <strong>${scratchBench}${benchmark.unit}</strong></p>
                             <p class="text-xs text-gray-500 mt-2">${attempts} attempts logged</p>
+                            <p class="text-xs text-gray-400 mt-1 italic">${benchmark.metric}</p>
                         </div>
                     </div>
                 `;
@@ -711,21 +846,31 @@
                     const avgPerformance = performance.length > 0 
                         ? Math.round(performance.reduce((sum, p) => sum + p.value, 0) / performance.length)
                         : 0;
-                    createPieChart(`chart-${index}`, avgPerformance, benchmark.drillName, benchmark.scratchBenchmark);
+                    
+                    // Calculate percentage for visualization
+                    let chartPercentage = 0;
+                    if (benchmark.unit.includes('%')) {
+                        chartPercentage = avgPerformance;
+                    } else if (benchmark.drillName === "Par 18 Putting 25'-40'") {
+                        chartPercentage = Math.max(0, 100 - (avgPerformance / benchmark.scratchBenchmark * 100));
+                    } else {
+                        chartPercentage = Math.min(100, (avgPerformance / benchmark.scratchBenchmark) * 100);
+                    }
+                    
+                    createPieChart(`chart-${index}`, chartPercentage, benchmark.drillName, benchmark.scratchBenchmark);
                 });
             }, 100);
         }
 
         function logDrillPerformance(drillName, benchmark) {
-            const performance = prompt(`Enter your performance for ${drillName}\n\nTarget: ${benchmark}%\n\nEnter your percentage (0-100):`);
+            const benchmarkInfo = drillBenchmarks.find(b => b.drillName === drillName);
+            const metricDescription = benchmarkInfo ? benchmarkInfo.metric : "performance";
+            
+            const performance = prompt(`Log your performance for:\n${drillName}\n\n${metricDescription}\nTarget: ${benchmark}${benchmarkInfo.unit}\n\nEnter your result:`);
             if (performance && !isNaN(performance)) {
                 const value = parseFloat(performance);
-                if (value >= 0 && value <= 100) {
-                    saveDrillPerformance(drillName, value);
-                    alert('✅ Performance logged successfully!');
-                } else {
-                    alert('Please enter a value between 0 and 100');
-                }
+                saveDrillPerformance(drillName, value);
+                alert('✅ Performance logged successfully!');
             }
         }
 
@@ -841,92 +986,116 @@
                 drillSets: [
                     [
                         {
+                            name: "Driver Start Line Drill",
+                            description: "Place alignment sticks creating a gate 10 yards out. Hit 12 drives through the gate.",
+                            goal: "Improve initial ball flight direction",
+                            reps: "12 shots",
+                            focus: "Face control at impact, not path manipulation",
+                            purpose: "Technique",
+                            tracked: true,
+                            metric: "How many through the gate"
+                        },
+                        {
+                            name: "Contact Control",
+                            description: "Learn to hit specific spots on the clubface on command. If every drive has been off the heel, you need the skill to intentionally hit toe to recalibrate",
+                            goal: "Learn how to solve problems",
+                            reps: "12 shots",
+                            focus: "Intentional control of strike location",
+                            purpose: "Skills"
+                        },
+                        {
                             name: "Heart Rate Tee Ball",
                             description: "Tight par 4, 22 yards either side. Hit drive, do 10 jumping jacks, wait 30 seconds, hit again. Repeat 8 times.",
                             goal: "Execute under pressure with elevated heart rate",
-                            reps: "8 drives minimum",
-                            focus: "Full routine each time - simulate tournament pressure"
+                            reps: "8 shots",
+                            focus: "Full routine each time - simulate tournament pressure",
+                            purpose: "Performance",
+                            tracked: true,
+                            metric: "How many out of 8 in the fairway"
                         },
+                        {
+                            name: "GIR Challenge (140-190 yds)",
+                            description: "Hit 10 shots per club (5i, 6i, 7i, 8i, 9i), track number out of 10 that land on target green",
+                            goal: "Improve dispersion with mid-irons",
+                            reps: "30 shots (10 per club)",
+                            focus: "Target-focused execution",
+                            purpose: "Performance",
+                            tracked: true,
+                            multiClub: true,
+                            clubs: ["5 Iron", "6 Iron", "7 Iron", "8 Iron", "9 Iron"],
+                            metric: "How many hit green (out of 10)"
+                        }
+                    ],
+                    [
                         {
                             name: "Second Serve (Driver vs 3W)",
                             description: "Hit 5 drivers with 'fairway finder' swing, then 5 with 3 wood. Track dispersion. Repeat 2x.",
                             goal: "Determine optimal tee club for tight holes",
-                            reps: "20 shots total",
-                            focus: "Which club gives better dispersion when it matters?"
+                            reps: "20 shots",
+                            focus: "Which club gives better dispersion when it matters?",
+                            purpose: "Technique"
+                        },
+                        {
+                            name: "Curve Control",
+                            description: "Practice curving the ball in both directions; if on a launch monitor focus on cutting amount of curve in half with each rep",
+                            goal: "Build shot-shaping ability",
+                            reps: "8 shots",
+                            focus: "Intentional curve, path and face control",
+                            purpose: "Skills"
                         },
                         {
                             name: "Shot Shaper",
                             description: "150-170 yard target. Imagine water right, aim 10 yards left, fade it back (can't cross pin). Do 5, then 5 jump squats, execute 6th shot. Repeat other direction.",
                             goal: "Build shot versatility under fatigue",
                             reps: "12 shots minimum",
-                            focus: "Heart pounding execution - normalize the feeling"
+                            focus: "Heart pounding execution - normalize the feeling",
+                            purpose: "Skills"
                         },
                         {
-                            name: "Lil Jon (Wedges)",
-                            description: "30, 60, 90 yards. Hit 3 shots at each distance with sand wedge, then repeat with 60°. Cycle through 3 times both clubs.",
-                            goal: "Dial in critical wedge distances",
-                            reps: "10 mins max",
-                            focus: "30 = common par 4/5 miss, 60 = tweener, 90 = bread & butter"
+                            name: "Fairway Finder Game",
+                            description: "10 drivers, +2 points for fairway, 0 for rough, -1 for trouble. Target 12+",
+                            goal: "Incentivize smart driving",
+                            reps: "10 shots",
+                            focus: "Risk management and shot selection",
+                            purpose: "Performance",
+                            tracked: true,
+                            metric: "How many points out of 20"
                         }
                     ],
                     [
                         {
-                            name: "3 A Side (Wedge Precision)",
-                            description: "60° wedge: Hit 50 yards (47-53 allowed). 3 chances to succeed. Then 60 yards (57-63), then 70 yards. Fail = restart.",
-                            goal: "Dial in exact wedge distances",
-                            reps: "10 minutes",
-                            focus: "Precision over power - nail your numbers"
-                        },
-                        {
-                            name: "Driver Start Line Drill",
-                            description: "Place alignment sticks creating a gate 10 yards out. Hit 12 drives through the gate.",
-                            goal: "Improve initial ball flight direction",
+                            name: "Driver Tee Height Experiment",
+                            description: "Hit 4 drives at low tee, 4 at medium, 4 at high. Observe launch and dispersion.",
+                            goal: "Optimize launch conditions",
                             reps: "12 shots",
-                            focus: "Face control at impact, not path manipulation"
+                            focus: "Attack angle and how tee height affects contact",
+                            purpose: "Technique"
                         },
                         {
-                            name: "Iron Compression Test",
-                            description: "Hit 8-iron focusing on ball-first contact. Judge quality by divot and flight.",
-                            goal: "Improve strike quality",
-                            reps: "10 shots",
-                            focus: "Weight forward, hands ahead, compress the ball"
+                            name: "Set Up Mix Up",
+                            description: "Hit from 6 set ups: ball normal, front foot, back foot, ball further away, normal, closer. Observe changes",
+                            goal: "Awareness drill, outcome focused, calibrating body",
+                            reps: "12 shots",
+                            focus: "Notice how setup changes affect ball flight",
+                            purpose: "Skills"
                         },
                         {
                             name: "Random Club Selection",
                             description: "Pick clubs randomly (5i-PW). Hit to varying distances without practice swings.",
                             goal: "Build course-ready decision making",
                             reps: "12 shots",
-                            focus: "Commit to the shot and trust your swing"
-                        }
-                    ],
-                    [
-                        {
-                            name: "Driver Tee Height Experiment",
-                            description: "Hit 4 drives at low tee, 4 at medium, 4 at high. Track launch and dispersion.",
-                            goal: "Optimize launch conditions",
-                            reps: "12 shots",
-                            focus: "Attack angle and how tee height affects contact"
+                            focus: "Commit to the shot and trust your swing",
+                            purpose: "Skills"
                         },
                         {
-                            name: "Iron Distance Gaps",
-                            description: "Hit 6-iron and 7-iron, measuring gaps. Ensure 10-15 yard difference.",
-                            goal: "Validate distance gapping",
-                            reps: "6 shots per club",
-                            focus: "Consistent swing with each club, no manipulation"
-                        },
-                        {
-                            name: "Wind Play Practice",
-                            description: "Visualize different wind conditions. Practice low punch, high fade, draw into wind.",
-                            goal: "Develop wind management skills",
-                            reps: "15 shots varied",
-                            focus: "Ball flight laws and trajectory control"
-                        },
-                        {
-                            name: "Fairway Finder Game",
-                            description: "10 drivers: +2 points for fairway, 0 for rough, -1 for trouble. Target: 12+",
-                            goal: "Incentivize smart driving",
+                            name: "Fairway Challenge",
+                            description: "Hit 7 out of 10 fairways, practicing full routine; create minimum distance to carry. If miss, 10 push ups and start over with one club less. Record score each session",
+                            goal: "Hit 7 out of 10 fairways, practicing full routine",
                             reps: "10 shots",
-                            focus: "Risk management and shot selection"
+                            focus: "Full pre-shot routine, commitment",
+                            purpose: "Performance",
+                            tracked: true,
+                            metric: "How many fairways hit"
                         }
                     ]
                 ]
@@ -936,92 +1105,118 @@
                 drillSets: [
                     [
                         {
-                            name: "Good, Bad, Ugly",
-                            description: "Choose a pin, put down 3 balls: (1) fringe tweener putt/chip, (2) straightforward chip (70%+ up-down), (3) terrible lie. All 3 must finish within 6 feet to advance.",
-                            goal: "Build scrambling from varied lies",
-                            reps: "Complete 4+ locations in 10 mins",
-                            focus: "Execute from any lie - make the ugly lie actually ugly"
-                        },
-                        {
-                            name: "8 out of 10 Circle Drill",
-                            description: "From 10 yards: 8/10 in 3-foot circle. From 20 yards: 8/10 in 6-foot circle. From 30 yards: 8/10 in 8-foot circle.",
-                            goal: "Improve scoring zone accuracy (PGA avg: 80%+)",
-                            reps: "30 chips total",
-                            focus: "Pick your landing spot, commit to trajectory"
-                        },
-                        {
-                            name: "NSEW Compass Chipping",
-                            description: "4 chips to each hole on green from different angles. Score how many of 64 chips finish inside 3 feet.",
-                            goal: "Develop directional control and touch",
-                            reps: "64 chips",
-                            focus: "Read green from all angles, adjust for slope"
-                        },
-                        {
-                            name: "Par-18 Chipping Challenge",
-                            description: "Play from different locations, par 2 for each 'hole'. Goal: get up and down in 2 strokes.",
-                            goal: "Simulate course pressure scenarios",
-                            reps: "18 different locations",
-                            focus: "Smart targets, commitment to the shot"
-                        }
-                    ],
-                    [
-                        {
                             name: "50-90 Yard Random Pitching",
                             description: "Use alignment stick in grip. Hit pitch shots between 50-90 yards in 10-yard increments, ensuring stick doesn't hit side of body.",
                             goal: "Dial in partial wedge distances",
-                            reps: "10+ shots varied distances",
-                            focus: "Body rotation, not just arms - stick as feedback"
+                            reps: "30 shots",
+                            focus: "Body rotation, not just arms - stick as feedback",
+                            purpose: "Technique"
                         },
                         {
-                            name: "Bunker Mastery Circuit",
-                            description: "10 in a row on green. 7/10 stop inside flagstick length. 5 in a row from green feet out of bunker. Complete the circuit.",
-                            goal: "Build bunker confidence (PGA avg: 50%+ up-down)",
-                            reps: "Until all 3 objectives met",
-                            focus: "Consistent entry point, accelerate through sand"
+                            name: "Lil Jon (Wedges)",
+                            description: "30, 60, 90 yards. Hit 3 shots at each distance with sand wedge, then repeat with 60°. Cycle through 3 times both clubs.",
+                            goal: "Dial in critical wedge distances",
+                            reps: "10 minutes",
+                            focus: "30 = common par 4/5 miss, 60 = tweener, 90 = bread & butter",
+                            purpose: "Skills"
                         },
                         {
-                            name: "Distance Wedge Ladder",
-                            description: "Hit wedges to 40, 50, 60, 70, 80 yards. Chart actual vs intended carry.",
-                            goal: "Dial in wedge distances",
-                            reps: "3 shots each distance",
-                            focus: "Different clubs or swing lengths for control"
+                            name: "Good, Bad, Ugly",
+                            description: "Choose a pin, put down 3 balls. (1) fringe tweener putt/chip, (2) straightforward chip (70%+ up-down), (3) terrible lie. All 3 must finish within 6 feet to advance.",
+                            goal: "Build scrambling from varied lies",
+                            reps: "Complete 4+ locations in 10 mins",
+                            focus: "Execute from any lie - make the ugly lie actually ugly",
+                            purpose: "Performance",
+                            tracked: true,
+                            metric: "How many total within 6 feet"
                         },
                         {
-                            name: "10-Yard Chipping Game",
-                            description: "From 10 yards, must get 10 in a row within 15 feet. Track time to complete.",
-                            goal: "Build consistency on basic chips",
-                            reps: "10 consecutive successful",
-                            focus: "Routine, pick spot, execute - no overthinking"
+                            name: "Par-18 Chipping Challenge",
+                            description: "Play from different locations, par 2 for each 'hole'. Goal, get up and down in 2 strokes.",
+                            goal: "Simulate course pressure scenarios",
+                            reps: "18 different locations",
+                            focus: "Smart targets, commitment to the shot",
+                            purpose: "Performance",
+                            tracked: true,
+                            metric: "Score over 18 holes"
                         }
                     ],
                     [
-                        {
-                            name: "Spin Control Wedges",
-                            description: "From 60 yards, hit shots trying to maximize spin vs minimize. Feel difference.",
-                            goal: "Understand spin creation",
-                            reps: "12 shots alternating",
-                            focus: "Angle of attack, face control, ball position"
-                        },
-                        {
-                            name: "Scramble Simulation",
-                            description: "Place ball in 5 difficult positions. Execute recovery shots as if in competition.",
-                            goal: "Practice course management",
-                            reps: "5 scenarios",
-                            focus: "Smart targets, commitment to the shot"
-                        },
                         {
                             name: "Hybrid/Utility Bump & Run",
                             description: "From 30-40 yards off green, use hybrid to bump ball onto green. Get 5 inside 15 feet.",
                             goal: "Add versatility to short game arsenal",
                             reps: "Until 5 successful",
-                            focus: "Putting-style stroke with lofted club"
+                            focus: "Putting-style stroke with lofted club",
+                            purpose: "Technique"
+                        },
+                        {
+                            name: "3-A-Side (Wedge Precision)",
+                            description: "60° wedge: Hit 50 yards (47-53 allowed). 3 chances to succeed. Then 60 yards (57-63), then 70 yards. Fail = restart.",
+                            goal: "Dial in exact wedge distances",
+                            reps: "10 minutes",
+                            focus: "Precision over power - nail your numbers",
+                            purpose: "Skills"
+                        },
+                        {
+                            name: "The Climb",
+                            description: "Start at 50 yds and work up in 10 yd windows, with one shot per window. Miss the window = 1 strike",
+                            goal: "Train distance control across the bag",
+                            reps: "Until 3 Strikes",
+                            focus: "Progressive distance challenge",
+                            purpose: "Performance",
+                            tracked: true,
+                            metric: "Final distance window"
+                        },
+                        {
+                            name: "NSEW Compass Chipping",
+                            description: "10 chips to each hole on green from different angles. How many of 40 chips finish inside 3 feet.",
+                            goal: "Develop directional control and touch",
+                            reps: "40 shots",
+                            focus: "Read green from all angles, adjust for slope",
+                            purpose: "Performance",
+                            tracked: true,
+                            metric: "How many finish inside 3 feet"
+                        }
+                    ],
+                    [
+                        {
+                            name: "Wedge Distance Game",
+                            description: "Hit 10 random distances between 50-120 yards (3 yard buffer) using random number generator, every yard outside buffer = 1 push up",
+                            goal: "Dial in wedge distances",
+                            reps: "10 shots",
+                            focus: "Precision distance control under pressure",
+                            purpose: "Skills"
+                        },
+                        {
+                            name: "Spin Control Wedges",
+                            description: "From 60 yards, hit shots trying to maximize spin vs minimize. Feel difference.",
+                            goal: "Understand spin creation",
+                            reps: "12 shots alternating",
+                            focus: "Angle of attack, face control, ball position",
+                            purpose: "Skills"
+                        },
+                        {
+                            name: "Scoring Zone",
+                            description: "From 10 yards: 8/10 in 3-foot circle. From 20 yards: 8/10 in 6-foot circle. From 30 yards: 8/10 in 8-foot circle.",
+                            goal: "Improve scoring zone accuracy (PGA avg 80%+)",
+                            reps: "30 chips total (10 per distance)",
+                            focus: "Pick your landing spot, commit to trajectory",
+                            purpose: "Performance",
+                            tracked: true,
+                            multiDistance: true,
+                            distances: ["10 yds", "20 yds", "30 yds"],
+                            metric: "How many within target circle (out of 10)"
                         },
                         {
                             name: "Pressure Chip Game",
                             description: "10 chips from varied lies. Start with 10 points, lose 1 for each miss outside 6 feet.",
                             goal: "Build mental toughness",
                             reps: "10 shots",
-                            focus: "Execute under pressure, manage expectations"
+                            focus: "Execute under pressure, manage expectations",
+                            purpose: "Performance",
+                            tracked: true,
+                            metric: "Score after 10 shots"
                         }
                     ]
                 ]
@@ -1031,92 +1226,114 @@
                 drillSets: [
                     [
                         {
-                            name: "AP Skeleton (Tee Targets)",
-                            description: "Find 2% slope area. Place center tee, create half-moon with 6 tees around it. From each position, 2 chances to hit center tee. Miss twice = restart from beginning.",
-                            goal: "Improve accuracy (PGA avg: 25.4 ft on 6-footers)",
-                            reps: "Pass/Fail in 10 mins",
-                            focus: "Hit tiny targets - hole looks HUGE after this drill"
+                            name: "Decade Distance Drill (20-40 feet)",
+                            description: "Start at 20ft, goal to be within 10% of starting distance (e.g., <2ft from 20ft).",
+                            goal: "Develop distance control (PGA avg 98.1% from 20ft, 90% from 30ft)",
+                            reps: "Multiple distances 20-40ft",
+                            focus: "Tempo and length of stroke, not hit",
+                            purpose: "Skills"
                         },
                         {
-                            name: "10 in a Row from 3-4 Feet",
-                            description: "Make 10 consecutive 3-4 foot putts. Miss one = restart. (PGA avg: 92% make rate)",
+                            name: "AP Skeleton",
+                            description: "Find 2% slope area. Place center tee, create half-moon with 6 tees around it. From each position, 2 chances to hit center tee. Miss twice = restart from beginning.",
+                            goal: "Improve accuracy (PGA avg 25.4 ft on 6-footers)",
+                            reps: "Pass/Fail in 10 mins",
+                            focus: "Hit tiny targets - hole looks HUGE after this drill",
+                            purpose: "Performance",
+                            tracked: true,
+                            metric: "How many attempts"
+                        },
+                        {
+                            name: "3-4 Footers",
+                            description: "Make 10 consecutive 3-4 foot putts. Miss one = restart. (PGA avg 92% make rate)",
                             goal: "Build confidence on must-make putts",
                             reps: "Until 10 consecutive",
-                            focus: "Solid strike, confident stroke, routine"
+                            focus: "Solid strike, confident stroke, routine",
+                            purpose: "Performance",
+                            tracked: true,
+                            metric: "How many out of 10 were made"
                         },
                         {
-                            name: "25 in a Row from 3 Feet",
-                            description: "Use 6 tee pegs around hole, switch directions after 12. Must make 25 consecutive.",
-                            goal: "Groove short putt stroke (PGA avg: 99.45%)",
-                            reps: "Until 25 consecutive",
-                            focus: "Start line accuracy, putter square through impact"
-                        },
-                        {
-                            name: "20-20-20 Lag Putting",
-                            description: "From 20, 30, 45 feet, must stop all putts in 3-foot circle. Use 3-5 balls.",
-                            goal: "Develop distance control (PGA avg: 98.1% from 20ft, 90% from 30ft)",
-                            reps: "Until successful at all 3 distances",
-                            focus: "Tempo and length of stroke, not hit"
-                        }
-                    ],
-                    [
-                        {
-                            name: "8 out of 10 from 5 Feet",
-                            description: "From 5 feet, make 8 out of 10 putts. (PGA avg: 80% make rate from 5 feet)",
-                            goal: "Improve make percentage on makeable putts",
-                            reps: "10 putts",
-                            focus: "Commitment to line, solid contact"
-                        },
-                        {
-                            name: "5 out of 10 from 8 Feet",
-                            description: "From 8 feet, make 5 out of 10 putts. (PGA avg: 50% make rate from 8 feet)",
-                            goal: "Build confidence from birdie range",
-                            reps: "10 putts",
-                            focus: "Read green, commit to speed and line"
-                        },
-                        {
-                            name: "3-Foot Compass Drill",
-                            description: "Take 4x 3-foot putts from all holes available. 36 putts at different holes. (PGA avg: 35.8/36 makes)",
-                            goal: "Simulate course conditions with varied slopes",
-                            reps: "36 putts minimum",
-                            focus: "Adjust read for each location, maintain routine"
-                        },
-                        {
-                            name: "Decade Distance Drill (20-40 feet)",
-                            description: "Mark distances at 20ft, roll putt between first tee-hole pair. Start at 20ft, goal to be within 10% of starting distance (e.g., <2ft from 20ft).",
-                            goal: "Master varying lag distances",
-                            reps: "Multiple distances 20-40ft",
-                            focus: "Feel for different power levels, tempo not force"
+                            name: "Par 18 Putting 25'-40'",
+                            description: "Play 18 holes from 25-40 feet. Par for each hole = 2 putts.",
+                            goal: "Lag putting distance control",
+                            reps: "18 putts",
+                            focus: "Minimize 3-putts, get close on first putt",
+                            purpose: "Performance",
+                            tracked: true,
+                            metric: "How many 3 putts"
                         }
                     ],
                     [
                         {
                             name: "Killer Drill",
-                            description: "Tee pegs from 3-10ft in line (1' increments), 3 Lives. No hole required, 3 tees, 2 strides forward when 3 strides forward, making first putt past first tee, second ball needs to pass first but not last.",
+                            description: "Tee pegs from 3-10ft in line (1' increments), 3 Lives. Make first putt, if you miss you lose a life. Progress through all distances.",
                             goal: "Build pressure putting skills",
                             reps: "Until complete or lives lost",
-                            focus: "Execute each putt independently, manage pressure"
+                            focus: "Execute each putt independently, manage pressure",
+                            purpose: "Skills"
                         },
                         {
+                            name: "5 Footers",
+                            description: "From 5 feet, make 8 out of 10 putts. (PGA avg 80% make rate from 5 feet)",
+                            goal: "Improve make percentage on makeable putts",
+                            reps: "10 putts",
+                            focus: "Commitment to line, solid contact",
+                            purpose: "Performance",
+                            tracked: true,
+                            metric: "How many out of 10 were made"
+                        },
+                        {
+                            name: "8 Footers",
+                            description: "From 8 feet, make 5 out of 10 putts. (PGA avg 50% make rate from 8 feet)",
+                            goal: "Build confidence from birdie range",
+                            reps: "10 putts",
+                            focus: "Read green, commit to speed and line",
+                            purpose: "Performance",
+                            tracked: true,
+                            metric: "How many out of 10 were made"
+                        },
+                        {
+                            name: "100-Foot Putting Drill",
+                            description: "4 putt lengths: 5 ft, 10ft, 15 ft, 20ft putts at each hole, repeat 5x",
+                            goal: "Distance control from varied lengths",
+                            reps: "20 putts total",
+                            focus: "Feel for different distances, consistent tempo",
+                            purpose: "Performance"
+                        }
+                    ],
+                    [
+                        {
                             name: "Overtake Game",
-                            description: "Same setup as Killer but on different lies, from 3-7 ft in 4 directions from hole. Remove tee when you hold putt from that spot. Total count, goal: pick up all tees in as few putts as possible.",
+                            description: "Same setup as Killer but on different lies, from 3-7 ft in 4 directions from hole. Remove tee when you hold putt from that spot. Total count, goal pick up all tees in as few putts as possible.",
                             goal: "Pressure putting from varied slopes",
                             reps: "Until all tees collected",
-                            focus: "Read slope changes, commit to each line"
+                            focus: "Read slope changes, commit to each line",
+                            purpose: "Skills"
                         },
                         {
                             name: "20 Tee Game",
-                            description: "Tee at 10ft, 2 pts for holing, -1 for coming up short or 3 putting. First to 10 pts wins. (PGA avg: 29/20 makes)",
+                            description: "Tee at 10ft, 2 pts for holing, -1 for coming up short or 3 putting. First to 10 pts wins. (PGA avg 29/20 makes)",
                             goal: "Build competitive mindset",
                             reps: "Until 10 points",
-                            focus: "Aggressive but controlled speed"
+                            focus: "Aggressive but controlled speed",
+                            purpose: "Performance"
                         },
                         {
                             name: "10-Foot Putt Game",
-                            description: "From 10 feet, score based on outcome: holing = 2pts, short/3-putt = -1pt. Target: reach 13 points. (PGA avg: 41.28% from 10ft)",
+                            description: "From 10 feet, score based on outcome holing = 2pts, short/3-putt = -1pt. Target reach 13 points. (PGA avg 41.28% from 10ft)",
                             goal: "Improve conversion from critical distance",
                             reps: "Until 13 points",
-                            focus: "Read, commit, trust your stroke"
+                            focus: "Read, commit, trust your stroke",
+                            purpose: "Performance"
+                        },
+                        {
+                            name: "20-Foot Putt Game",
+                            description: "From 15 or 20 feet, score based on outcome holing = 2pts, short/3-putt = -1pt. Target reach 13 points.",
+                            goal: "Improve conversion from critical distance",
+                            reps: "Until 13 points",
+                            focus: "Speed control, minimize 3-putts",
+                            purpose: "Performance"
                         }
                     ]
                 ]
@@ -1155,16 +1372,36 @@
                 // Check if this drill has a benchmark
                 const benchmark = drillBenchmarks.find(b => b.drillName === drill.name);
                 
+                // Generate tracking buttons for multi-club/multi-distance drills
+                let trackingButtons = '';
+                if (drill.tracked) {
+                    if (drill.multiClub && drill.clubs) {
+                        // Multiple buttons for each club
+                        trackingButtons = drill.clubs.map(club => 
+                            `<button onclick="logDrillPerformance('GIR Challenge - ${club}', 60)" class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-medium hover:bg-yellow-200 transition-colors">📈 Log ${club}</button>`
+                        ).join('');
+                    } else if (drill.multiDistance && drill.distances) {
+                        // Multiple buttons for each distance
+                        trackingButtons = drill.distances.map(dist => 
+                            `<button onclick="logDrillPerformance('Scoring Zone - ${dist}', 80)" class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-medium hover:bg-yellow-200 transition-colors">📈 Log ${dist}</button>`
+                        ).join('');
+                    } else if (benchmark) {
+                        // Single tracking button
+                        trackingButtons = `<button onclick="logDrillPerformance('${drill.name}', ${benchmark.scratchBenchmark})" class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-medium hover:bg-yellow-200 transition-colors">📈 Log Performance</button>`;
+                    }
+                }
+                
                 return `
                     <div class="border-2 border-gray-200 rounded-lg p-5 ${completedDrills.has(index) ? 'bg-green-50 border-green-300' : 'bg-white'}">
                         <div class="flex justify-between items-start mb-3">
                             <div class="flex-1">
-                                <div class="flex items-center gap-2">
+                                <div class="flex items-center gap-2 flex-wrap">
                                     <button onclick="toggleFavorite('${drillKey}')" class="text-2xl hover:scale-110 transition-transform">
                                         ${isFav ? '⭐' : '☆'}
                                     </button>
                                     <h3 class="text-lg font-semibold text-gray-800">${drill.name}</h3>
-                                    ${benchmark ? '<span class="ml-2 bg-purple-100 text-purple-700 px-2 py-1 rounded text-xs font-medium">📊 Tracked</span>' : ''}
+                                    ${drill.purpose ? `<span class="bg-indigo-100 text-indigo-700 px-2 py-1 rounded text-xs font-medium">${drill.purpose}</span>` : ''}
+                                    ${benchmark || drill.tracked ? '<span class="bg-purple-100 text-purple-700 px-2 py-1 rounded text-xs font-medium">📊 Tracked</span>' : ''}
                                 </div>
                                 <p class="text-sm text-green-700 font-medium mt-1">${drill.goal}</p>
                             </div>
@@ -1181,7 +1418,7 @@
                         <div class="flex flex-wrap gap-2 mt-3">
                             <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">${drill.reps}</span>
                             <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm">${drill.focus}</span>
-                            ${benchmark ? `<button onclick="logDrillPerformance('${drill.name}', ${benchmark.scratchBenchmark})" class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-medium hover:bg-yellow-200 transition-colors">📈 Log Performance</button>` : ''}
+                            ${trackingButtons}
                         </div>
                     </div>
                 `;
